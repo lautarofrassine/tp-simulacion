@@ -37,7 +37,7 @@ import statistics
 import matplotlib.pyplot as plt
 
 # cantidad de tiradas
-n = 3700
+n = 100
 
 # cantidad de corridas
 c = 4
@@ -125,6 +125,43 @@ def calcular_varianza(listavalores):
     return vv_c
 
 
+#para demostrar que las rachas no existen o son muy improbables (a mas grande la racha menos chances)
+def calcular_rachas():
+    lista = tiradas()[0]
+    rojos = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]
+    rachas = []
+    racha_actual = 0
+
+    for i in lista:
+        if i in rojos:
+            racha_actual += 1
+        else:
+            if racha_actual > 0:
+                rachas.append(racha_actual)
+                racha_actual = 0
+
+    if racha_actual > 0:
+        rachas.append(racha_actual)
+    
+    plt.figure(figsize=(10, 6))
+    
+    bins = range(1, max(rachas) + 2) if rachas else [1]
+    plt.hist(rachas, bins=bins, color='orange', edgecolor='black', align='left', rwidth=0.8)
+    plt.title('Frecuencia de Rachas de Números Rojos')
+    plt.xlabel('Longitud de la racha (consecutivos)')
+    plt.ylabel('Cantidad de veces detectada')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    plt.show()
+
+
+    
+
+    
+           
+
+
+
 def calcular_desvioestandar(listavalores):
     dv_c = []
     for i in range(c):
@@ -174,7 +211,7 @@ def frecuencia_absoluta():
 
 
 
-evolucion_de_saldo()
+calcular_rachas()
 """
 # Generacion de todos los valores de las tiradas de todas las corridas
 listavalores = tiradas()
