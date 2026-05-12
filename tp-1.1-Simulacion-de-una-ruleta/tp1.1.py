@@ -74,6 +74,33 @@ def frecuencia_relativa(listavalores):
     return fr_c
 
 
+def evolucion_de_saldo():
+    saldo = 2000
+    #apuestas de 100 
+    variacion_saldo = []
+    lista_tiradas = tiradas()[0]
+    for tirada in lista_tiradas:
+        if tirada == e:
+            saldo = saldo + 3500
+        else:
+            saldo = saldo - 100
+        variacion_saldo.append(saldo)
+    
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(variacion_saldo, color='purple', label='Capital del Jugador')
+    plt.axhline(y=2000, color='red', linestyle='--', label='Saldo Inicial')
+
+    plt.title('Evolución del Saldo - Una Corrida')
+    plt.xlabel('tiradas')
+    plt.ylabel('Dinero del Jugador')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
+        
+
+
 def promedio_observado(listavalores):
 
     vp_c = []
@@ -145,6 +172,10 @@ def frecuencia_absoluta():
     plt.show()
 
 
+
+
+evolucion_de_saldo()
+"""
 # Generacion de todos los valores de las tiradas de todas las corridas
 listavalores = tiradas()
 
@@ -211,6 +242,12 @@ plt.show()
 
 
 frecuencia_absoluta()
+
+"""
+
+
+
+
 
 
 """
