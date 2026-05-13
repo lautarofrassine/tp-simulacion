@@ -19,15 +19,19 @@ import random
 import statistics
 import matplotlib.pyplot as plt
 
+
+n = int(input("Ingrese la cantidad de tiradas: "))
+c = int(input("Ingrese la cantidad de corridas: "))
+e = int(input("Ingrese el número elegido (entre 0 y 36): "))
+
+"""
 # cantidad de tiradas
 n = 30
-
 # cantidad de corridas
 c = 4
-
 # numero elegido
 e = 11
-
+"""
 
 desvio_n = []
 dv = []
@@ -195,9 +199,6 @@ plt.ylabel("Desvío Estandar")
 plt.legend()
 plt.tight_layout()
 plt.show()
-
-
-
 
 
 
