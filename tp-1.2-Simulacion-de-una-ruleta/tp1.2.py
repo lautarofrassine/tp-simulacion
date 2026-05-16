@@ -3,11 +3,11 @@ import random
 import matplotlib.pyplot as plt
 
 
-
+finito = False
 numero_elegido = 11
-tiradas = 100;
+tiradas = 10000;
 numeros_rojos = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
-def simulacion_martingala():
+def simulacion_martingala(condicion):
 
     bancarrotas_x = []
     bancarrotas_y = []
@@ -39,6 +39,8 @@ def simulacion_martingala():
             cant_bancarrotas += 1
             apuesta = 10
             saldo = 1000
+        if cant_bancarrotas > 0 and condicion == False:
+            break
     
 
     plt.plot(lista_saldos)
@@ -54,7 +56,7 @@ def simulacion_martingala():
     plt.legend()
     plt.show()
 
-def simulacion_dalembert():
+def simulacion_dalembert(condicion):
     bancarrotas_x = []
     bancarrotas_y = []
     saldo = 1000
@@ -88,6 +90,8 @@ def simulacion_dalembert():
             apuesta = 10
             saldo = 1000
             apuesta = 10
+        if cant_bancarrotas > 0 and condicion == False:
+            break
 
     plt.plot(lista_saldos)
     plt.axhline(y=1000, color='red', linestyle='--', label="Saldo Inicial")
@@ -102,7 +106,7 @@ def simulacion_dalembert():
     plt.legend()
     plt.show()
 
-def simulacion_fibonacci():
+def simulacion_fibonacci(condicion):
     bancarrotas_x = []
     bancarrotas_y = []
     saldo = 1000
@@ -128,30 +132,23 @@ def simulacion_fibonacci():
             idx_fib = max(0, idx_fib - 2)
             apuesta = apuesta_base * secuencia_fib[idx_fib]
         else:
-            saldo -= apuesta
-            
-            
-            idx_fib += 1
-            
-            
+            saldo -= apuesta      
+            idx_fib += 1  
             if idx_fib >= len(secuencia_fib):
                 siguiente_fib = secuencia_fib[-1] + secuencia_fib[-2]
                 secuencia_fib.append(siguiente_fib)
                 
-            apuesta = apuesta_base * secuencia_fib[idx_fib]
-            
+            apuesta = apuesta_base * secuencia_fib[idx_fib]  
         lista_saldos.append(saldo)
-        
-        
         if saldo <= 0:
             bancarrotas_x.append(indice + 1)
             bancarrotas_y.append(saldo)
             cant_bancarrotas += 1
-            
-            
             saldo = 1000
             idx_fib = 0
             apuesta = apuesta_base * secuencia_fib[idx_fib]
+        if cant_bancarrotas > 0 and condicion == False:
+            break
 
     plt.plot(lista_saldos, label="Evolución del Saldo", color="purple")
     plt.axhline(y=1000, color='red', linestyle='--', label="Saldo Inicial")
@@ -168,5 +165,63 @@ def simulacion_fibonacci():
     plt.grid(True, linestyle=':', alpha=0.6)
     plt.show()
 
+def simulacion_paroli(condicion):
+    
+    bancarrotas_x = []
+    bancarrotas_y = []
 
-simulacion_fibonacci()  
+    victorias_consecutivas = 0
+    victorias_maximas = 3
+    saldo = 1000
+    apuesta = 10
+    lista_saldos = []
+    cant_bancarrotas = 0 
+    lista = []
+    for i in range(tiradas):
+        lista.append(random.randint(0,36))
+
+
+
+    for indice, i in enumerate(lista):
+        
+        if  i in numeros_rojos:
+            saldo += apuesta
+            lista_saldos.append(saldo)
+            apuesta = apuesta*2
+            victorias_consecutivas += 1
+            if victorias_consecutivas == victorias_maximas:
+                victorias_consecutivas = 0
+                apuesta = 10
+        else:
+            saldo -= apuesta
+            apuesta = 10
+            lista_saldos.append(saldo)
+        if saldo <= 0:
+            bancarrotas_x.append(indice + 1)
+            bancarrotas_y.append(saldo)
+            cant_bancarrotas += 1
+            apuesta = 10
+            saldo = 1000
+        if cant_bancarrotas > 0 and condicion == False:
+            break
+    
+
+    plt.plot(lista_saldos)
+    plt.axhline(y=1000, color='red', linestyle='--', label="Saldo Inicial")
+    plt.axhline(y=0, color='black', linestyle='-', label="Bancarrota")
+
+    if cant_bancarrotas > 0:
+        plt.scatter(bancarrotas_x, bancarrotas_y, color='red', s=50, zorder=5, 
+                    label=f"Bancarrotas detectadas ({len(bancarrotas_x)})")
+    plt.xlabel("Iteración")
+    plt.ylabel("Saldo")
+    plt.title("Simulación de Paroli")
+    plt.legend()
+    plt.show()
+
+
+
+simulacion_martingala(False)
+simulacion_dalembert(False)
+simulacion_fibonacci(False)
+simulacion_paroli(False)
