@@ -7,6 +7,9 @@ a = 1664525
 c = 1013904223
 m = 2**32
 
+
+
+
 def siguiente_uniforme():
     global semilla
     semilla = (a * semilla + c) % m  # Actualiza la semilla global para la próxima llamada
